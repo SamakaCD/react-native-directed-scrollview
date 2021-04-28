@@ -3,23 +3,28 @@ package com.rnds;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.graphics.Matrix;
-import androidx.interpolator.view.animation.LinearOutSlowInInterpolator;
-import android.util.Log;
 import android.view.MotionEvent;
+import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewParent;
-import android.view.ScaleGestureDetector;
 import android.view.animation.Interpolator;
 import android.widget.OverScroller;
+
+import com.facebook.react.bridge.Arguments;
+import com.facebook.react.bridge.ReactContext;
+import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.uimanager.PixelUtil;
 import com.facebook.react.uimanager.events.NativeGestureUtil;
+import com.facebook.react.uimanager.events.RCTEventEmitter;
 import com.facebook.react.views.scroll.ReactScrollViewHelper;
 import com.facebook.react.views.scroll.VelocityHelper;
 import com.facebook.react.views.view.ReactViewGroup;
-import com.facebook.react.bridge.ReactContext;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import androidx.interpolator.view.animation.LinearOutSlowInInterpolator;
 
 public class DirectedScrollView extends ReactViewGroup {
   private static final Interpolator SNAP_BACK_ANIMATION_INTERPOLATOR =
@@ -188,6 +193,12 @@ public class DirectedScrollView extends ReactViewGroup {
             } else {
               clampAndTranslateChildren(false);
             }
+
+            WritableMap event = Arguments.createMap();
+            event.putDouble("zoom", scaleFactor);
+            ReactContext reactContext = (ReactContext) getContext();
+            reactContext.getJSModule(RCTEventEmitter.class).receiveEvent(getId(), "zoom", event);
+
             invalidate();
           }
         });

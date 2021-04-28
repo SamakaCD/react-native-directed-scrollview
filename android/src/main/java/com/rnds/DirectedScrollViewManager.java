@@ -1,14 +1,16 @@
 package com.rnds;
 
-import androidx.annotation.Nullable;
-import androidx.annotation.NonNull;
+import com.facebook.react.bridge.ReadableArray;
+import com.facebook.react.common.MapBuilder;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.ViewGroupManager;
 import com.facebook.react.uimanager.annotations.ReactProp;
-import com.facebook.react.bridge.ReadableArray;
-import com.facebook.react.common.MapBuilder;
 import com.facebook.react.views.scroll.ScrollEventType;
+
 import java.util.Map;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 class DirectedScrollViewManager extends ViewGroupManager<DirectedScrollView> {
   public static final int COMMAND_SCROLL_TO = 1;
@@ -77,6 +79,7 @@ class DirectedScrollViewManager extends ViewGroupManager<DirectedScrollView> {
         .put(
             ScrollEventType.getJSEventName(ScrollEventType.MOMENTUM_END),
             MapBuilder.of("registrationName", "onMomentumScrollEnd"))
+        .put("zoom", MapBuilder.of("registrationName", "onZoom"))
         .build();
   }
 
